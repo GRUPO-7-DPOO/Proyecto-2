@@ -480,82 +480,85 @@ public class Galeria {
         guardarArchivo(info, archivoDeUsuarios);
     }
     
+    
+  
+    
     private void guardarPiezas() throws Exception {
         String info = "";
         for (Pieza pieza : this.enExhibicion.values()) {
         	if (pieza.getTipoPieza().equals("Pintura")) {
         		Pintura pieza1 = (Pintura) pieza;
-        		info += pieza1.toString2() + "\n";
+        		info += pieza1.toString2() + ";1\n";
         	} else if (pieza.getTipoPieza().equals("Escultura")) {
         		Escultura pieza1 = (Escultura) pieza;
-        		info += pieza1.toString() + "\n";
+        		info += pieza1.toString() + ";1\n";
         	} else if (pieza.getTipoPieza().equals("Fotografia")) {
         		Fotografia pieza1 = (Fotografia) pieza;
-        		info += pieza1.toString() + "\n";
+        		info += pieza1.toString() + ";1\n";
         	} else if (pieza.getTipoPieza().equals("Impresiones")) {
         		Impresiones pieza1 = (Impresiones) pieza;
-        		info += pieza1.toString() + "\n";
+        		info += pieza1.toString() + ";1\n";
         	} else {
         		Video pieza1 = (Video) pieza;
-        		info += pieza1.toString() + "\n";
+        		info += pieza1.toString() + ";1\n";
         		
         	}
         	
   
         }
-        for (Pieza pieza : this.enExhibicion.values()) {
+        for (Pieza pieza : this.enBodega.values()) {
         	if (pieza.getTipoPieza().equals("Pintura")) {
         		Pintura pieza1 = (Pintura) pieza;
-        		info += pieza1.toString2() + "\n";
+        		info += pieza1.toString2() + ";2\n";
         	} else if (pieza.getTipoPieza().equals("Escultura")) {
         		Escultura pieza1 = (Escultura) pieza;
-        		info += pieza1.toString() + "\n";
+        		info += pieza1.toString() + ";2\n";
         	} else if (pieza.getTipoPieza().equals("Fotografia")) {
         		Fotografia pieza1 = (Fotografia) pieza;
-        		info += pieza1.toString() + "\n";
+        		info += pieza1.toString() + ";2\n";
         	} else if (pieza.getTipoPieza().equals("Impresiones")) {
         		Impresiones pieza1 = (Impresiones) pieza;
-        		info += pieza1.toString() + "\n";
+        		info += pieza1.toString() + ";2\n";
         	} else {
         		Video pieza1 = (Video) pieza;
-        		info += pieza1.toString() + "\n";
+        		info += pieza1.toString() + ";2\n";
         	
         }
         }
         for (Pieza pieza : this.vendidas) {
         	if (pieza.getTipoPieza().equals("Pintura")) {
         		Pintura pieza1 = (Pintura) pieza;
-        		info += pieza1.toString2() + "\n";
+        		info += pieza1.toString2() + ";3\n";
         	} else if (pieza.getTipoPieza().equals("Escultura")) {
         		Escultura pieza1 = (Escultura) pieza;
-        		info += pieza1.toString() + "\n";
+        		info += pieza1.toString() + ";3\n";
         	} else if (pieza.getTipoPieza().equals("Fotografia")) {
         		Fotografia pieza1 = (Fotografia) pieza;
-        		info += pieza1.toString() + "\n";
+        		info += pieza1.toString() + ";3\n";
         	} else if (pieza.getTipoPieza().equals("Impresiones")) {
         		Impresiones pieza1 = (Impresiones) pieza;
-        		info += pieza1.toString() + "\n";
+        		info += pieza1.toString() + ";3\n";
         	} else {
         		Video pieza1 = (Video) pieza;
-        		info += pieza1.toString() + "\n";
+        		info += pieza1.toString() + ";3\n";
         	}
         }
         for (Pieza pieza : this.regresadas) {
         	if (pieza.getTipoPieza().equals("Pintura")) {
         		Pintura pieza1 = (Pintura) pieza;
-        		info += pieza1.toString2() + "\n";
+        		info += pieza1.toString2() + ";4\n";
         	} else if (pieza.getTipoPieza().equals("Escultura")) {
         		Escultura pieza1 = (Escultura) pieza;
-        		info += pieza1.toString() + "\n";
+        		info += pieza1.toString() + ";4\n";
         	} else if (pieza.getTipoPieza().equals("Fotografia")) {
         		Fotografia pieza1 = (Fotografia) pieza;
-        		info += pieza1.toString() + "\n";
+        		info += pieza1.toString() + ";4\n";
         	} else if (pieza.getTipoPieza().equals("Impresiones")) {
         		Impresiones pieza1 = (Impresiones) pieza;
-        		info += pieza1.toString() + "\n";
+        		info += pieza1.toString() + ";4\n";
         	} else {
         		Video pieza1 = (Video) pieza;
-        		info += pieza1.toString() + "\n";
+        		info += pieza1.toString() + ";4\n";
         	}
         }
         guardarArchivo(info, archivoDePiezas);
