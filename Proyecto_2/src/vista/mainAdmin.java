@@ -168,7 +168,6 @@ public class mainAdmin {
 	            } else if (opcion == 9) {
 	            	String nombre = input("Seleccione la pieza de la que desea ver el historial: ").toLowerCase();
 	            	historialPieza(Admin, nombre);
-	                modificarPieza(Admin);
 	            }
 	            
 	            
