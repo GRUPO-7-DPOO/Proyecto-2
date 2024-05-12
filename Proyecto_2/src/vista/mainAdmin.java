@@ -43,7 +43,6 @@ public class mainAdmin {
     private void iniciarAplicacion() {
         try {
             this.galeria = new Galeria();
-            galeria.guardarDatos();
             this.usuario = logIn();
             galeria.guardarDatos();
 
@@ -262,7 +261,7 @@ public class mainAdmin {
 	        for (String elemento : array) {
 	        	if (!galeria.getUsuarios().containsKey(elemento)) {
 	                System.out.println("El usuario no existe\nCreando autor...");
-	                Cliente cliente1 = (Cliente) crearUsuario(admin);
+	                Cliente cliente1 = (Cliente) crearUsuarioAutor(admin);
 	                autores.add(cliente1);
 	                
 	                
@@ -521,6 +520,25 @@ public class mainAdmin {
 	        }
 	        return usuario;
 	    }
+    
+    private Usuario crearUsuarioAutor(Admin admin) throws Error {
+    	String nombre = input("Ingrese el nombre del autor: ");
+        String login = input("Ingrese el login del autor: ");
+        String password = input("Ingrese el password del autor: ");
+        String telefono = input("Ingrese el telefono del autor: ");
+        String correo = input("Ingrese el correo del autor: ");
+        Usuario usuario = null;
+
+
+           
+            
+        usuario = new Cliente("Autor",nombre, login, password, telefono, correo, 0, galeria);
+        
+        if (usuario != null) {
+        	admin.agregarUsuario(usuario);
+        }
+        return usuario;
+    }
 	
 
     private void modificarUsuario(Admin admin) throws Error {
@@ -833,7 +851,7 @@ public class mainAdmin {
 			            System.out.println(elemento);
 			        }
 		        } else {
-		        	System.out.println("Historial de compra de la pieza\n");
+		        	System.out.println("La pieza no ha sifo comprada\n");
 		        }
 	        } else {
 	        	System.out.println("La pieza no se ha encontrado");
