@@ -1,0 +1,2 @@
+5;losmu;1234;roma;true;3400;0;false;05-11-2024;5;Consignacion;Sat May 11 22:25:30 COT 2024;;Pintura;45x2;;no romper;odio
+5;losmu;1234;roma;true;3400;0;false;05-11-2024;5;Consignacion;Sat May 11 22:25:30 COT 2024;;Pintura;45x2;;no romper;odio

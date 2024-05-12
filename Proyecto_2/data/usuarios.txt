@@ -1,0 +1,3 @@
+caravv;yamemame;diosayuda;1234;18338;@@@@;2
+Administrador;Jess;admin;0000;302456789;admin@galeria.com;2
+Autor;Vanessa;vane3;pne;32109;vanep69@gmail;0;;;1
