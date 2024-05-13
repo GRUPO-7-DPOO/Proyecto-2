@@ -31,11 +31,18 @@ public class Admin extends Usuario {
         }
         return pieza;
     }
+    
+    public void agregarPiezaAt(Pieza pieza, List<Cliente> lista) {
+    	for (Cliente cliente: lista) {
+    		cliente.getAutoriaVendidasCompradas().add(pieza);
+    	}
+	}
 
-    public Pieza cambiarUbicacionPieza(Integer ubicacionPieza, String nombre) {
+    public Pieza cambiarUbicacionPieza(String nombre) {
         Pieza pieza;
         
-        if (ubicacionPieza == 1) {
+        
+        if (galeria.getEnExhibicion().containsKey(nombre)) {
             pieza = galeria.getEnExhibicion().get(nombre);
             galeria.getEnExhibicion().remove(nombre);
             galeria.getEnBodega().put(pieza.getTitulo(), pieza);
