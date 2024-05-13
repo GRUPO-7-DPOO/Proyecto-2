@@ -40,18 +40,12 @@ public class mainAdmin {
         app.iniciarAplicacion();
     }
 
-    private void iniciarAplicacion() {
-        try {
+    public void iniciarAplicacion() {
+    	try {
             this.galeria = new Galeria();
             this.usuario = logIn();
             galeria.guardarDatos();
-
-            // Debugging: imprimir usuarios cargados
-            System.out.println("Usuarios cargados:");
-            for (Map.Entry<String, Usuario> entry : galeria.getUsuarios().entrySet()) {
-                System.out.println(entry.getKey() + ": " + entry.getValue());
-                System.out.println(entry.getValue().getLogin() + ":" + entry.getValue().getClave());
-            }
+  
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
@@ -152,6 +146,8 @@ public class mainAdmin {
 	            if (opcion == 1 || opcion == 2) {
 	                Pieza pieza = formularioPieza(Admin);
 	                Admin.agregarPieza(pieza, opcion);
+	                List <Cliente> listaAt = pieza.getAutores();
+	                Admin.agregarPiezaAt(pieza, listaAt);
 	            } else if (opcion == 3) {
 	                cambiarUbicacionPieza(Admin);
 	            } else if (opcion == 4) {
@@ -225,127 +221,123 @@ public class mainAdmin {
 	        } while (opcion != 0);
 	    }
 	
+    private Pieza formularioPieza(Admin admin) throws Error {
+        String titulo = input("Ingrese el título de la pieza: ");
+        Integer anioCreacion = Integer.parseInt(input("Ingrese el anio de creacion de la pieza: "));
+        String lugarCreacion = input("Ingrese el lugar de creacion de la pieza: ");
+        String tipoPieza = "";
+        Integer opcion = Integer.parseInt(input("Tipo pieza:\n1. Escultura\n2. Fotografia\n3. Impresion\n4. Pintura\n5. Video"));
+        if (opcion == 1) {
+            tipoPieza = "Escultura";
+        } else if (opcion == 2) {
+            tipoPieza = "Fotografia";
+        } else if (opcion == 3) {
+            tipoPieza = "Impresiones";
+        } else if (opcion == 4) {
+            tipoPieza = "Pintura";
+        } else if (opcion == 5) {
+            tipoPieza = "Video";
+        }
+        
+        opcion = Integer.parseInt(input("Pieza disponible?\n1. Si\n2. No"));
+        boolean disponible = opcion == 1 ? true : false;
+        Integer valor = Integer.parseInt(input("Ingrese el valor de la pieza: "));
+        Integer tiempoAcordado = Integer.parseInt(input("Tiempo acordado en dias: "));
+        String modalidad = "Consignacion";
+        Pieza pieza = null;
+        
+        if (tipoPieza.equals("Escultura")) {
+        	
+        	List<String> materiales1 =  new ArrayList<>();
+            System.out.println("Materiales de construccion:");
+            String mat = input("\nIngrese los materiales de la escultura separados por comas: ");
+                
+            String[] array1 = mat.split(",");
+                
+            for (String material : array1) {
+                materiales1.add(material);
+            }
+            
+            String dimensiones = input("Ingrese las dimensiones de la pieza: ");
+            Integer peso = Integer.parseInt(input("Ingrese el peso de la pieza: "));
+            opcion = Integer.parseInt(input("Requiere de electricidad?\n1. Si\n2. No"));
+            boolean electricidad = opcion == 1 ? true : false;
+            String detalles = input("Ingrese detalles a tener en cuenta: ");
+            
+            Escultura escultura  = new Escultura(galeria.getSecuenciaPiezas(), titulo, anioCreacion, lugarCreacion, tipoPieza,  disponible, valor, tiempoAcordado, modalidad, dimensiones,materiales1, peso, electricidad, detalles);
 
-    private Pieza formularioPieza(Admin admin) throws Error  {
-	        String titulo = input("Ingrese el título de la pieza: ").toLowerCase().replaceAll("\\s", "");
-	        Integer anioCreacion = Integer.parseInt(input("Ingrese el anio de creacion de la pieza: "));
-	        String lugarCreacion = input("Ingrese el lugar de creacion de la pieza(pais): ").toLowerCase();
-	        String tipoPieza = "";
-	        Integer opcion = Integer.parseInt(input("Tipo pieza:\n1. Escultura\n2. Fotografia\n3. Impresion\n4. Pintura\n5. Video"));
-	        if (opcion == 1) {
-	        	tipoPieza = "Escultura";
-	        			}
-	        else if (opcion ==2) {
-	        	tipoPieza = "Fotografia";
-	        } else if (opcion == 3) {
-	        	tipoPieza = "Impresiones";
-	        } else if (opcion == 4) {
-	        	tipoPieza = "Pintura";
-	        } else if (opcion == 5) {
-	        	tipoPieza = "Video";
-	        }
-	        
-	        opcion = Integer.parseInt(input("Pieza disponible?\n1. Si\n2. No"));
-	        boolean disponible = opcion == 1 ? true : false;
-	        Integer valor = Integer.parseInt(input("Ingrese el valor de la pieza: "));
-	        Integer tiempoAcordado = Integer.parseInt(input("Tiempo acordado en dias: "));
-	        String modalidadPrestamo = "Consignacion";
-	        Boolean bloq = false;
-	        Integer valorMinimo = 0;
-	        List<Cliente> autores =  new ArrayList<>();
-	        String aut = input("Ingrese los logins de los autores separados por comas: ");
-	        
-	        String[] array = aut.split(",");
-	        
-	        for (String elemento : array) {
-	        	if (!galeria.getUsuarios().containsKey(elemento)) {
-	                System.out.println("El usuario no existe\nCreando autor...");
-	                Cliente cliente1 = (Cliente) crearUsuarioAutor(admin);
-	                autores.add(cliente1);
-	                
-	                
-	        	} else {
-	                Cliente cliente = (Cliente) galeria.getUsuarios().get(elemento);
-	                autores.add(cliente);
-	        	}
-	        }
-	        
-	        Pieza pieza;
-	        if (tipoPieza.equals("Escultura")) {
-	            String dimensiones = input("Ingrese las dimensiones de la pieza: ");
-	            Integer peso = Integer.parseInt(input("Ingrese el peso de la pieza: "));
-	            opcion = Integer.parseInt(input("Requiere de electricidad?\n1. Si\n2. No"));
-	            boolean electricidad = opcion == 1 ? true : false;
-	            String detalles = input("Ingrese detalles a tener en cuenta: ");
-	            
-	            List<String> materiales1 =  new ArrayList<>();
-	            System.out.println("Materiales de construccion:");
-	            String mat = input("\nIngrese los materiales de la escultura separados por comas: ");
-	                
-	            String[] array1 = mat.split(",");
-	                
-	            for (String material : array1) {
-	                        materiales1.add(material);
-	            	
-	        
-	            }
-	            
-	            Escultura escultura = new Escultura(galeria.getSecuenciaPiezas(), titulo, anioCreacion,lugarCreacion, disponible, valor, valorMinimo, bloq, null, tiempoAcordado, modalidadPrestamo, null, autores, tipoPieza, dimensiones, peso, electricidad, detalles, materiales1);
-	
-	            pieza = escultura;
-	         
-	        } else if (tipoPieza.equals("Video")){
-	        	Integer duracion = Integer.parseInt(input("Ingrese la duracion del video: "));
-	        	String resolucion = input("Ingrese la resolucion del video");
-	        	Float peso = Float.parseFloat(input("Infrese el peso del video"));
-	        	String categoria = input("Ingrese la categoria del video");
-	        	
-	        	pieza = new Video(galeria.getSecuenciaPiezas(), titulo, anioCreacion,lugarCreacion, disponible, valor, valorMinimo, bloq, null, tiempoAcordado, modalidadPrestamo, null, autores, tipoPieza, duracion, resolucion, peso, categoria);
-	            	
-	        } else if (tipoPieza.equals("Pintura")) {
-	        	
-	        	String dimensiones = input("Ingrese las dimensiones de la pintura");
-	        	
-	        	List<String> materiales1 =  new ArrayList<>();
-	            System.out.println("Materiales de construccion:");
-	            String mat = input("\nIngrese los materiales de la escultura separados por comas: ");
-	                
-	            String[] array1 = mat.split(",");
-	                
-	            for (String material : array1) {
-	                        materiales1.add(material);
-	            }
-	                        
-	            String cuidados = input("Ingrese los cuidados que se deben tener con la pintura: ");
-	            String tecnica = input("Ingrese la tecnica usada en la pintura");
-	        	
-	            pieza = new Pintura(galeria.getSecuenciaPiezas(), titulo, anioCreacion,lugarCreacion, disponible, valor, valorMinimo, bloq, null, tiempoAcordado, modalidadPrestamo, null, autores, tipoPieza, dimensiones, materiales1, cuidados, tecnica);
-	        } else if (tipoPieza.equals("Impresiones")) {
-	        	
-	        	String dimensiones = input("Ingrese las dimensiones de la impresion");
-	        	String formato = input("Ingrese el formato de la impresion");
-	        	String material = input("Ingrese el material de la impresion");
-	        	String resolucion = input("Ingrese la resolucion de la impresion");
-	        	String acabado = input("Ingrese el acabado de la impresion");
-	        	
-	        	pieza = new Impresiones(galeria.getSecuenciaPiezas(), titulo, anioCreacion,lugarCreacion, disponible, valor, valorMinimo, bloq, null, tiempoAcordado, modalidadPrestamo, null, autores, tipoPieza, dimensiones, formato, material, resolucion,acabado);
-	        }
-	       
-	        
-	        
-	        else {
-	            String formato = input("Ingrese el formato de la fotografia: ");
-	            String resolucion = input("Ingrese la resolucion de la fotografia");
-	            String dimensiones = input("Ingrese las dimensiones de la fotografia");
-	            String categoria = input("Ingrese la categoria de la fotografia");
-	            pieza = new Fotografia(galeria.getSecuenciaPiezas(), titulo, anioCreacion,lugarCreacion, disponible, valor, valorMinimo, bloq, null, tiempoAcordado, modalidadPrestamo, null, autores, tipoPieza, formato, resolucion, dimensiones, categoria);
-	        }
-	        
-	        return pieza;
-	                
-	    }
-	    
-	    
+            
+            pieza = escultura;
+            
+        } else if (tipoPieza.equals("Video")){
+            Integer duracion = Integer.parseInt(input("Ingrese la duracion del video: "));
+            String resolucion = input("Ingrese la resolucion del video");
+            Float peso = Float.parseFloat(input("Infrese el peso del video"));
+            String categoria = input("Ingrese la categoria del video");
+            new Video(galeria.getSecuenciaPiezas(), titulo, anioCreacion, lugarCreacion, tipoPieza, disponible, valor, tiempoAcordado, modalidad, duracion, resolucion, peso, categoria);
+       
+        }  else if (tipoPieza.equals("Pintura")) {
+            String dimensiones = input("Ingrese las dimensiones de la pintura");
+            
+            List<String> materiales1 =  new ArrayList<>();
+            System.out.println("Materiales de construccion:");
+            String mat = input("\nIngrese los materiales de la pintura separados por comas: ");
+                
+            String[] array1 = mat.split(",");
+                
+            for (String material : array1) {
+                materiales1.add(material);
+            }
+                        
+            String cuidados = input("Ingrese los cuidados que se deben tener con la pintura: ");
+            String tecnica = input("Ingrese la tecnica usada en la pintura");
+            
+            pieza = new Pintura(galeria.getSecuenciaPiezas(), titulo, anioCreacion, lugarCreacion, tipoPieza, disponible, valor, tiempoAcordado, modalidad, dimensiones, materiales1, cuidados, tecnica);
+            
+        } else if (tipoPieza.equals("Impresiones")) {
+            String dimensiones = input("Ingrese las dimensiones de la impresion");
+            String formato = input("Ingrese el formato de la impresion");
+            String material = input("Ingrese el material de la impresion");
+            String resolucion = input("Ingrese la resolucion de la impresion");
+            String acabado = input("Ingrese el acabado de la impresion");
+            
+            pieza = new Impresiones(galeria.getSecuenciaPiezas(), titulo, anioCreacion, lugarCreacion, tipoPieza, disponible, valor, tiempoAcordado, modalidad, dimensiones, formato, material, resolucion, acabado);
+        } else {
+            String formato = input("Ingrese el formato de la fotografia: ");
+            String resolucion = input("Ingrese la resolucion de la fotografia");
+            String dimensiones = input("Ingrese las dimensiones de la fotografia");
+            String categoria = input("Ingrese la categoria de la fotografia");
+            pieza = new Fotografia(galeria.getSecuenciaPiezas(), titulo, anioCreacion, lugarCreacion, tipoPieza, disponible, valor, tiempoAcordado, modalidad, formato,  resolucion, dimensiones, categoria);
+        }
+      
+        boolean trabajando;
+        do {
+            String login = input("Ingrese el login del autor: ");
+            Cliente cliente;
+            if (!galeria.getUsuarios().containsKey(login)) {
+                System.out.println("El usuario no existe\nCreando autor...");
+                cliente = (Cliente) crearUsuario(admin);
+            } else {
+                cliente = (Cliente) galeria.getUsuarios().get(login);
+            }
+            pieza.agregarAutor(cliente);
+            cliente.getAutoriaVendidasCompradas().add(pieza);
+            trabajando = Integer.parseInt(input("Desea agregar otro autor?\n1. Si\n2. No")) == 1 ? true : false;
+        } while (trabajando);
+        String login = input("Ingrese el login del propietario: ");
+        Cliente cliente;
+        if (!galeria.getUsuarios().containsKey(login)) {
+            System.out.println("El usuario no existe\nCreando propietario...");
+            cliente = (Cliente) crearUsuario(admin);
+        } else {
+            cliente = (Cliente) galeria.getUsuarios().get(login);
+        }
+        cliente.getPrestadasEnEspera().add(pieza);
+        return pieza;
+    }
+    
+
+   
 	    
 
     private void modificarPieza(Admin admin) throws Exception {
@@ -372,19 +364,19 @@ public class mainAdmin {
 	        if (pieza.getTipoPieza().equals("Escultura")) {
 	        	
 				@SuppressWarnings("null")
-				Pieza nuevaPieza = new Escultura(id, titulo, anioCreacion,lugarCreacion, disponible, valor, null, false, null, tiempoAcordado, null, null, null, null, null, null, (Boolean) null, null, null);
+				Pieza nuevaPieza = new Escultura(id, titulo, anioCreacion, lugarCreacion, null, disponible, valor, tiempoAcordado, null, null, null, null, (Boolean) null, null);
 	        	admin.modificarPieza(nuevaPieza);
 	        }else if (pieza.getTipoPieza().equals("Video")) {
-	        	Pieza nuevaPieza = new Video(id, titulo, anioCreacion,lugarCreacion, disponible, valor, null, false, null, tiempoAcordado, null, null, null, null, null, null, null, null);
+	        	Pieza nuevaPieza = new Video(id, titulo, anioCreacion, lugarCreacion, null, disponible, valor, tiempoAcordado, null, null, null, null, null);
 	        	admin.modificarPieza(nuevaPieza);
 	        }else if (pieza.getTipoPieza().equals("Pintura")) {
-	        	Pieza nuevaPieza = new Pintura(id, titulo, anioCreacion,lugarCreacion, disponible, valor, null, false, null, tiempoAcordado, null, null, null, null, null, null, null, null);
+	        	Pieza nuevaPieza = new Pintura(id, titulo, anioCreacion, lugarCreacion, null, disponible, valor, tiempoAcordado, null, null, null, null, null);
 	        	admin.modificarPieza(nuevaPieza);
 	        } else if (pieza.getTipoPieza().equals("Fotografia")) {
-	        	Pieza nuevaPieza = new Fotografia(id, titulo, anioCreacion,lugarCreacion, disponible, valor, null, false, null, tiempoAcordado, null, null, null, null, null, null, null, null);
+	        	Pieza nuevaPieza = new Fotografia(id, titulo, anioCreacion, lugarCreacion, null, disponible, valor, tiempoAcordado, null, null, null, null, null);
 	        	admin.modificarPieza(nuevaPieza);
 	        } else {
-	        	Pieza nuevaPieza = new Impresiones(id, titulo, anioCreacion,lugarCreacion, disponible, valor, null, false, null, tiempoAcordado, null, null, null, null, null, null, null, null,null);
+	        	Pieza nuevaPieza = new Impresiones(id, titulo, anioCreacion,lugarCreacion, null, disponible, valor, tiempoAcordado, null, null, null, null, null, null);
 	        	admin.modificarPieza(nuevaPieza);
 	        
 	        }
@@ -395,21 +387,21 @@ public class mainAdmin {
     private void cambiarUbicacionPieza(Admin admin) {
 	    	
 	    	String nombre = input("Ingrese el nombre de la pieza: ");
-	        Integer ubicacion = Integer.parseInt(input("Seleccione el cambio a realizar:\n1. En exhibicion -> En bodega\n2. En bodega -> En exhibicion")) - 1;
 	        
-	        admin.cambiarUbicacionPieza(ubicacion, nombre);
+	        
+	        admin.cambiarUbicacionPieza(nombre);
 	        	
 	
 	    }
 	
 
     private String getPiezasEnExhibicion() {
-	        String string = "Piezas en exhibicion:\n";
-	        for (Pieza pieza:  galeria.getEnExhibicion().values()) {
-	            string += Integer.toString(pieza.getId()) + "- " + pieza.getTitulo() + "\n";
-	        }
-	        return string;
-	    }
+        String string = "Piezas en exhibicion:\n";
+        for (Pieza pieza:  galeria.getEnExhibicion().values()) {
+            string += Integer.toString(pieza.getId()) + "- " + pieza.getTitulo() + "\n";
+        }
+        return string;
+    }
 	
 
     private String getPiezasEnBodega() {
@@ -504,40 +496,23 @@ public class mainAdmin {
 	        String telefono = input("Ingrese el telefono del usuario: ");
 	        String correo = input("Ingrese el correo del usuario: ");
 	        Usuario usuario = null;
-	        Integer ubicacion = Integer.parseInt(input("Tipo de usuario:\n1. Cliente\n2. Empleado"));
-	        if (ubicacion == 1) {
-	           
-	            
+	        
+	        if (tipo.equals("Autor") || tipo.equals("Cliente"))  {
 	            usuario = new Cliente(tipo,nombre, login, password, telefono, correo, 0, galeria);
-	        } else if (ubicacion == 2) {
+	       
 	            
 	            
-	            usuario = new Empleado(tipo,nombre, login, password, telefono, correo, galeria);
+	        } else {   
+	        	usuario = new Empleado(tipo,nombre, login, password, telefono, correo, galeria);
 	        }
 	        if (usuario != null) {
 	        	admin.agregarUsuario(usuario);
 	        }
 	        return usuario;
 	    }
+
     
-    private Usuario crearUsuarioAutor(Admin admin) throws Error {
-    	String nombre = input("Ingrese el nombre del autor: ");
-        String login = input("Ingrese el login del autor: ");
-        String password = input("Ingrese el password del autor: ");
-        String telefono = input("Ingrese el telefono del autor: ");
-        String correo = input("Ingrese el correo del autor: ");
-        Usuario usuario = null;
 
-
-           
-            
-        usuario = new Cliente("Autor",nombre, login, password, telefono, correo, 0, galeria);
-        
-        if (usuario != null) {
-        	admin.agregarUsuario(usuario);
-        }
-        return usuario;
-    }
 	
 
     private void modificarUsuario(Admin admin) throws Error {
@@ -640,28 +615,28 @@ public class mainAdmin {
 	        
 	        if (tipo.equals("Escultura")){
 	        	
-	        	Pieza piezaModificada = new Escultura(pieza.getId(), null, null, null, false, null, valorMinimo, false, null, null, null, null, null,null,null,null,false, null, null);
+	        	Pieza piezaModificada = new Escultura(pieza.getId(), null, null, null, null, false, null, valorMinimo, false, null, null, null, null, null, null, null,(Boolean) null, null);
 	        	admin.agregarPiezaSubasta(subasta, piezaModificada);
 	        	
 	        } else if (tipo.equals("Fotografia")){
 	        	
-	        	Pieza piezaModificada = new Fotografia(pieza.getId(), null, null, null, false, null, valorMinimo, false, null, null, null, null, null,null,null,null,null, null);
+	        	Pieza piezaModificada = new Fotografia(pieza.getId(), null, null, null, null, false, null, valorMinimo, false, null, null,null,null, null, null, null, null);
 	        	admin.agregarPiezaSubasta(subasta, piezaModificada);
 	        	
 	        } else if (tipo.equals("Pintura")){
 	        	
-	        	Pieza piezaModificada = new Pintura(pieza.getId(), null, null, null, false, null, valorMinimo, false, null, null, null, null, null, null, null, null, null, null);
+	        	Pieza piezaModificada = new Pintura(pieza.getId(), null, null, null, null, false, null, valorMinimo, false, null, null, null, null, null, null, null, null);
 	        	admin.agregarPiezaSubasta(subasta, piezaModificada);
 	        	
 	        } if (tipo.equals("Impresiones")){
 	        	
-	        	Pieza piezaModificada = new Impresiones(pieza.getId(), null, null, null, false, null, valorMinimo, false, null, null, null, null, null, null, null, null, null, null, null);
+	        	Pieza piezaModificada = new Impresiones(pieza.getId(), null, null, null, null, false, null, valorMinimo, false, null, null, null, null, null, null, null, null, null);
 	        	admin.agregarPiezaSubasta(subasta, piezaModificada);
 	        }
 	        
 	        else {
 	        	
-	        	Pieza piezaModificada = new Video(pieza.getId(), null, null, null, false, null, valorMinimo, false, null, null, null, null, null,null,null,null,null, null);
+	        	Pieza piezaModificada = new Video(pieza.getId(), null, null, null, null, false, null, valorMinimo, false, null, null,null,null, null, null, null, null);
 	        	admin.agregarPiezaSubasta(subasta, piezaModificada);
 	        }
 	        
@@ -868,27 +843,30 @@ public class mainAdmin {
 	   		usuario = galeria.getUsuarios().get(login);
 	   		Cliente cliente = (Cliente) usuario;
 	   		List<Pieza> Piezas = cliente.getAutoriaVendidasCompradas();
+	   		
+	   		
+	   		
 	   		String respuesta = cliente.toStringPieza2(Piezas);
+	   		
 	   		
 	
 			System.out.println("Piezas del autor: \n");
 			System.out.println(respuesta);
 			
-	   		for (Compra compras : admin.getGaleria().getCompras()) {
-	   			for (int i = 0; i < Piezas.size(); i++) {
-	   				if (compras.getPieza()== Piezas) {
-	   					verificacionCompra.add(compras.toString4());
-	   				}	
-	   			
-	   			}
-	   			
-	   		}
+			
+			for (Compra compra : admin.getGaleria().getCompras()) {
+			    Pieza piezaCompra = compra.getPieza();
+			    if (Piezas.contains(piezaCompra)) {
+			        verificacionCompra.add(compra.toString4());
+			    }
+			}
+
 	   		
 	   		if (verificacionCompra.size() != 0) {
 	   			System.out.println("Historial de compra de sus piezas: \n");
 	   			System.out.println(verificacionCompra);
 	   		} else {
-	   			System.out.println("Las piezas del autor no han sio compradas.");	
+	   			System.out.println("Las piezas del autor no han sido compradas.");	
 	   			}
 	   			
 	   			
