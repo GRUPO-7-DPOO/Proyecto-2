@@ -92,7 +92,7 @@ public class Cliente extends Usuario {
     public String toStringPieza2(List<Pieza> lista) {
     	String string = "";
     	for (Pieza pieza : lista) {
-            string += "Id de la pieza: " + Integer.toString(pieza.id) +  "Nombre de la pieza: " + pieza.titulo + "Fecha de creacion: " + pieza.anioCreacion +"\n";
+            string += "Id de la pieza: " + Integer.toString(pieza.id) +  "\nNombre de la pieza: " + pieza.titulo + "\nFecha de creacion: " + pieza.anioCreacion +"\n";
         }
         string = string.length() > 0 ? string.substring(0, string.length()-1) : string;
         return string;
