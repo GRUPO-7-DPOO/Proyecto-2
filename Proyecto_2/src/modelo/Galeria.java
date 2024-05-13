@@ -123,8 +123,11 @@ public class Galeria {
     private void cargarDatos() throws Exception {
         cargarSecuencia();
         cargarSubastas();
-        cargarUsuarios();
+        
         cargarPiezas();
+        
+        cargarUsuarios();
+        
         cargarCompras();
         cargarOfertas();
         
@@ -265,9 +268,11 @@ public class Galeria {
                         Integer idPieza = Integer.parseInt(autoriaVendidaComprada);
                         Pieza pieza = getPiezaPorId(idPieza);
                         cliente.getAutoriaVendidasCompradas().add(pieza);
+                        
                         if (tipo.equals("Autor")) {
                             pieza.getAutores().add(cliente);
                         }
+
                     }
                 }
                 usuario = cliente;
@@ -289,95 +294,94 @@ public class Galeria {
         String linea = br.readLine();
         while (linea != null) {
             String[] informacion = linea.split(";");
+         
+            
+            
+            System.out.println("Información de la línea:");
+            for (int i = 0; i < informacion.length; i++) {
+                System.out.println("Elemento " + i + ": " + informacion[i]);
+            }
+            
             Integer id = Integer.parseInt(informacion[0]);
+            System.out.println("ID de la pieza: " + id);
+            
             String titulo = informacion[1];
             Integer anioCreacion = Integer.parseInt(informacion[2]);
             String lugarCreacion = informacion[3];
-            String tipoPieza = informacion[13];
-            boolean disponible = informacion[4].equals("true");
+            String tipoPieza = informacion[4];
+            boolean disponible = informacion[5].equals("true");
 
-            Integer valor = Integer.parseInt(informacion[5]);
+            Integer valor = Integer.parseInt(informacion[6]);
             Integer valorMinimo;
-            if (informacion[6].isEmpty()) {
+            if (informacion[7].isEmpty()) {
                 valorMinimo = null;
             } else {
-                valorMinimo = Integer.parseInt(informacion[6]);
+                valorMinimo = Integer.parseInt(informacion[7]);
             }
-            boolean bloqueado = Boolean.parseBoolean(informacion[7]);
-            Date ingreso = new Date(Long.parseLong(informacion[8]));
-            Integer tiempoAcordado = Integer.parseInt(informacion[9]);
-            String modalidadPrestamo = informacion[10];
+            boolean bloqueado = Boolean.parseBoolean(informacion[8]);
+            Date ingreso = new Date(Long.parseLong(informacion[9]));
+            Integer tiempoAcordado = Integer.parseInt(informacion[10]);
+            String modalidadPrestamo = informacion[11];
             
-            Date fechaVentaEntrega = informacion[11].isEmpty() ? null : new Date(Long.parseLong(informacion[11]));;
-            
-            String[] autoresStr = informacion[12].split(",");
-            
-            List<Cliente> autoresLista = new ArrayList<>();
-            for (String autor : autoresStr) {
-            	Usuario at = usuarios.get(autor);
-            	Cliente att = (Cliente) at;
-            	autoresLista.add(att);
-            }
-            
-            
+            Date fechaVentaEntrega = informacion[12].isEmpty() ? null : new Date(Long.parseLong(informacion[12]));;
             
             Integer ubicacion = null;
             Pieza pieza;
             if (tipoPieza.equals("Escultura")) {
-                String dimensiones = informacion[14];
+                String dimensiones = informacion[13];
                 
-                String[] materialesStr = informacion[15].split(",");
-                
-                List<String> materialesLista = new ArrayList<>();
-                for (String material : materialesStr) {
-                    materialesLista.add(new String(material.trim()));
-                }
-                
-                Integer peso = Integer.parseInt(informacion[16]);
-                boolean electricidad = Boolean.parseBoolean(informacion[17]);
-                String detalles = informacion[18];
-                ubicacion = Integer.parseInt(informacion[19]);
-                
-                pieza = new Escultura(id, titulo, anioCreacion, lugarCreacion, disponible, valor, valorMinimo, bloqueado, ingreso, tiempoAcordado, modalidadPrestamo,fechaVentaEntrega, autoresLista, tipoPieza, dimensiones, peso, electricidad, detalles, materialesLista);
-            } else if (tipoPieza.equals("Pintura")) {
-            	
-                String dimensiones = informacion[14];
-                
-                String[] materialesStr = informacion[15].split(",");
+                String[] materialesStr = informacion[14].split(",");
                 
                 List<String> materialesLista = new ArrayList<>();
                 for (String material : materialesStr) {
                     materialesLista.add(new String(material.trim()));
                 }
                 
-                String cuidados = informacion[16];
-                
-                String tecnica = informacion[17];
-                
+                Integer peso = Integer.parseInt(informacion[15]);
+                boolean electricidad = Boolean.parseBoolean(informacion[16]);
+                String detalles = informacion[17];
                 ubicacion = Integer.parseInt(informacion[18]);
                 
-                pieza = new Pintura(id, titulo, anioCreacion, lugarCreacion, disponible, valor, valorMinimo, bloqueado, ingreso, tiempoAcordado, modalidadPrestamo,fechaVentaEntrega,autoresLista, tipoPieza,dimensiones, materialesLista, cuidados, tecnica);
+                pieza = new Escultura(id, titulo, anioCreacion, lugarCreacion, tipoPieza,  disponible, valor, valorMinimo, bloqueado, ingreso, tiempoAcordado, modalidadPrestamo, fechaVentaEntrega, dimensiones,materialesLista, peso, electricidad, detalles);
+            } else if (tipoPieza.equals("Pintura")) {
+            	
+                String dimensiones = informacion[13];
+                
+                String[] materialesStr = informacion[14].split(",");
+                
+                List<String> materialesLista = new ArrayList<>();
+                for (String material : materialesStr) {
+                    materialesLista.add(new String(material.trim()));
+                }
+                
+                String cuidados = informacion[15];
+                
+                String tecnica = informacion[16];
+                
+                ubicacion = Integer.parseInt(informacion[17]);
+                
+                pieza = new Pintura(id,titulo, anioCreacion, lugarCreacion, tipoPieza, disponible, valor,valorMinimo,bloqueado,ingreso, tiempoAcordado, modalidadPrestamo,fechaVentaEntrega, dimensiones, materialesLista, cuidados, tecnica);
                 
             } else if (tipoPieza.equals("Video")) {
             	
-                Integer duracion = Integer.parseInt(informacion[14]);
-                String resolucion = informacion[15];
-                Float peso = Float.parseFloat(informacion[16]);          
-                String categoria = informacion[17];
-                ubicacion = Integer.parseInt(informacion[18]);
+                Integer duracion = Integer.parseInt(informacion[13]);
+                String resolucion = informacion[14];
+                Float peso = Float.parseFloat(informacion[15]);          
+                String categoria = informacion[16];
+                ubicacion = Integer.parseInt(informacion[17]);
                 
-                pieza = new Video(id, titulo, anioCreacion, lugarCreacion, disponible, valor, valorMinimo, bloqueado, ingreso, tiempoAcordado, modalidadPrestamo,fechaVentaEntrega ,autoresLista, tipoPieza,duracion, resolucion, peso, categoria);
+                pieza = new Video(id, titulo, anioCreacion, lugarCreacion, tipoPieza, disponible, valor, valorMinimo, bloqueado, ingreso, tiempoAcordado, modalidadPrestamo,fechaVentaEntrega, duracion, resolucion, peso, categoria);
                 
             } else if (tipoPieza.equals("Impresiones")) {
             	
-                String dimensiones = informacion[14];
-                String formato = informacion[15];
-                String material = informacion[16];          
-                String resolucion = informacion[17];
-                String acabado = informacion[18];
-                ubicacion = Integer.parseInt(informacion[19]);
+                String dimensiones = informacion[13];
+                String formato = informacion[14];
+                String material = informacion[15];          
+                String resolucion = informacion[16];
+                String acabado = informacion[17];
+                ubicacion = Integer.parseInt(informacion[18]);
                 
-                pieza = new Impresiones(id, titulo, anioCreacion, lugarCreacion, disponible, valor, valorMinimo, bloqueado, ingreso, tiempoAcordado, modalidadPrestamo,fechaVentaEntrega, autoresLista, tipoPieza,dimensiones, formato, material, resolucion, acabado);
+                pieza = new Impresiones(id, titulo, anioCreacion, lugarCreacion, tipoPieza, disponible, valor,valorMinimo, bloqueado, ingreso, tiempoAcordado, modalidadPrestamo,fechaVentaEntrega, dimensiones, formato, material, resolucion, acabado);
                 
             } else  {
             	
@@ -388,7 +392,7 @@ public class Galeria {
                 String categoria = informacion[17];
                 ubicacion = Integer.parseInt(informacion[18]);
                  
-                pieza = new Fotografia(id, titulo, anioCreacion, lugarCreacion, disponible, valor, valorMinimo, bloqueado, ingreso, tiempoAcordado, modalidadPrestamo, fechaVentaEntrega,autoresLista, tipoPieza,dimensiones, formato, resolucion, categoria);
+                pieza = new Fotografia(id, titulo, anioCreacion, lugarCreacion, tipoPieza, disponible, valor,valorMinimo, bloqueado, ingreso, tiempoAcordado, modalidadPrestamo, fechaVentaEntrega, formato,  resolucion, dimensiones, categoria);
                 
             	
             } 
@@ -407,6 +411,7 @@ public class Galeria {
         }
         br.close();
     }
+
 
 
     private void cargarCompras() throws Exception {
@@ -451,8 +456,9 @@ public class Galeria {
     public void guardarDatos() throws Exception {
         guardarSecuencia();
         guardarSubastas();
-        guardarUsuarios();
         guardarPiezas();
+        guardarUsuarios();
+        
         guardarCompras();
         guardarOfertas();
         
@@ -596,26 +602,27 @@ public class Galeria {
         return actual;
     }
 
-    public Pieza getPiezaPorId(Integer id) {
+    public Pieza getPiezaPorId(Integer id1) {
+    	
         for (Pieza pieza: enExhibicion.values()) {
-            if (pieza.id == id) {
+            if (pieza.id == id1) {
                 return pieza;
             }
         }
         for (Pieza pieza: enBodega.values()) {
-            if (pieza.id == id) {
+            if (pieza.id == id1) {
                 return pieza;
             }
         }
         for (int i = 0; i < vendidas.size(); i++) {
             Pieza pieza = vendidas.get(i);
-            if (pieza.id == id) {
+            if (pieza.id == id1) {
                 return pieza;
             }
         }
         for (int i = 0; i < regresadas.size(); i++) {
             Pieza pieza = regresadas.get(i);
-            if (pieza.id == id) {
+            if (pieza.id == id1) {
                 return pieza;
             }
         }
@@ -743,4 +750,3 @@ public class Galeria {
         this.usuarios = usuarios;
     }
 
-}
