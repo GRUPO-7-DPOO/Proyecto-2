@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import excepciones.Error;
-
+import modelo.Admin;
 import modelo.Cliente;
 import modelo.Compra;
 import modelo.Empleado;
@@ -219,55 +219,57 @@ public class mainEmpleado {
 
     
     private void modificarPieza(Empleado emp) throws Exception {
-	        Integer id = Integer.parseInt(input("Ingrese el id de la pieza a modificar: "));
-	        Pieza pieza = galeria.getPiezaPorId(id);
-	        String titulo = pieza.getTitulo();
-	        Integer opcion = Integer.parseInt(input("El titulo actual es: " + titulo + "\nDesea cambiarlo?\n1. Si\n2. No"));
-	        titulo = opcion == 1 ? input("Nuevo titulo: ") : titulo;
-	        Integer anioCreacion = pieza.getAnioCreacion();
-	        opcion = Integer.parseInt(input("El anio de creacion actual es: " + anioCreacion + "\nDesea cambiarlo?\n1. Si\n2. No"));
-	        anioCreacion = opcion == 1 ? Integer.parseInt(input("Nuevo anio de creacion: ")) : anioCreacion;
-	        String lugarCreacion = pieza.getLugarCreacion();
-	        opcion = Integer.parseInt(input("El lugar de creacion actual es: " + lugarCreacion + "\nDesea cambiarlo?\n1. Si\n2. No"));
-	        lugarCreacion = opcion == 1 ? input("Nuevo lugar de creacion: ") : lugarCreacion;
-	        boolean disponible = pieza.isDisponible();
-	        opcion = Integer.parseInt(input("La disponibilidad actual es: " + disponible + "\nDesea cambiarla?\n1. Si\n2. No"));
-	        disponible = opcion == 1 ? !disponible : disponible;
-	        Integer valor = pieza.getValor();
-	        opcion = Integer.parseInt(input("El valor actual es: " + valor + "\nDesea cambiarlo?\n1. Si\n2. No"));
-	        valor = opcion == 1 ? Integer.parseInt(input("Nuevo valor: ")) : valor;
-	        Integer tiempoAcordado = pieza.getTiempoAcordado();
-	        opcion = Integer.parseInt(input("El tiempo acordado actual es: " + tiempoAcordado + "\nDesea cambiarlo?\n1. Si\n2. No"));
-	        tiempoAcordado = opcion == 1 ? Integer.parseInt(input("Nuevo tiempo acordado: ")) : tiempoAcordado;
-	        if (pieza.getTipoPieza().equals("Escultura")) {
+        Integer id = Integer.parseInt(input("Ingrese el id de la pieza a modificar: "));
+        Pieza pieza = galeria.getPiezaPorId(id);
+        String titulo = pieza.getTitulo();
+        Integer opcion = Integer.parseInt(input("El titulo actual es: " + titulo + "\nDesea cambiarlo?\n1. Si\n2. No"));
+        titulo = opcion == 1 ? input("Nuevo titulo: ") : titulo;
+        Integer anioCreacion = pieza.getAnioCreacion();
+        opcion = Integer.parseInt(input("El anio de creacion actual es: " + anioCreacion + "\nDesea cambiarlo?\n1. Si\n2. No"));
+        anioCreacion = opcion == 1 ? Integer.parseInt(input("Nuevo anio de creacion: ")) : anioCreacion;
+        String lugarCreacion = pieza.getLugarCreacion();
+        opcion = Integer.parseInt(input("El lugar de creacion actual es: " + lugarCreacion + "\nDesea cambiarlo?\n1. Si\n2. No"));
+        lugarCreacion = opcion == 1 ? input("Nuevo lugar de creacion: ") : lugarCreacion;
+        boolean disponible = pieza.isDisponible();
+        opcion = Integer.parseInt(input("La disponibilidad actual es: " + disponible + "\nDesea cambiarla?\n1. Si\n2. No"));
+        disponible = opcion == 1 ? !disponible : disponible;
+        Integer valor = pieza.getValor();
+        opcion = Integer.parseInt(input("El valor actual es: " + valor + "\nDesea cambiarlo?\n1. Si\n2. No"));
+        valor = opcion == 1 ? Integer.parseInt(input("Nuevo valor: ")) : valor;
+        Integer tiempoAcordado = pieza.getTiempoAcordado();
+        opcion = Integer.parseInt(input("El tiempo acordado actual es: " + tiempoAcordado + "\nDesea cambiarlo?\n1. Si\n2. No"));
+        tiempoAcordado = opcion == 1 ? Integer.parseInt(input("Nuevo tiempo acordado: ")) : tiempoAcordado;
+        if (pieza.getTipoPieza().equals("Escultura")) {
+        	
+			@SuppressWarnings("null")
+			Pieza nuevaPieza = new Escultura(id, titulo, anioCreacion, lugarCreacion, null, disponible, valor, tiempoAcordado, null, null, null, null, (Boolean) null, null);
+        	emp.modificarPieza(nuevaPieza);
+        }else if (pieza.getTipoPieza().equals("Video")) {
+        	Pieza nuevaPieza = new Video(id, titulo, anioCreacion, lugarCreacion, null, disponible, valor, tiempoAcordado, null, null, null, null, null);
+        	emp.modificarPieza(nuevaPieza);
+        }else if (pieza.getTipoPieza().equals("Pintura")) {
+        	Pieza nuevaPieza = new Pintura(id, titulo, anioCreacion, lugarCreacion, null, disponible, valor, tiempoAcordado, null, null, null, null, null);
+        	emp.modificarPieza(nuevaPieza);
+        } else if (pieza.getTipoPieza().equals("Fotografia")) {
+        	Pieza nuevaPieza = new Fotografia(id, titulo, anioCreacion, lugarCreacion, null, disponible, valor, tiempoAcordado, null, null, null, null, null);
+        	emp.modificarPieza(nuevaPieza);
+        } else {
+        	Pieza nuevaPieza = new Impresiones(id, titulo, anioCreacion,lugarCreacion, null, disponible, valor, tiempoAcordado, null, null, null, null, null, null);
+        	emp.modificarPieza(nuevaPieza);
+        
+        }
+        	
+    }
 	        	
-				@SuppressWarnings("null")
-				Pieza nuevaPieza = new Escultura(id, titulo, anioCreacion,lugarCreacion, disponible, valor, null, false, null, tiempoAcordado, null, null, null, null, null, null, (Boolean) null, null, null);
-	        	emp.modificarPieza(nuevaPieza);
-	        }else if (pieza.getTipoPieza().equals("Video")) {
-	        	Pieza nuevaPieza = new Video(id, titulo, anioCreacion,lugarCreacion, disponible, valor, null, false, null, tiempoAcordado, null, null, null, null, null, null, null, null);
-	        	emp.modificarPieza(nuevaPieza);
-	        }else if (pieza.getTipoPieza().equals("Pintura")) {
-	        	Pieza nuevaPieza = new Pintura(id, titulo, anioCreacion,lugarCreacion, disponible, valor, null, false, null, tiempoAcordado, null, null, null, null, null, null, null, null);
-	        	emp.modificarPieza(nuevaPieza);
-	        } else if (pieza.getTipoPieza().equals("Fotografia")) {
-	        	Pieza nuevaPieza = new Fotografia(id, titulo, anioCreacion,lugarCreacion, disponible, valor, null, false, null, tiempoAcordado, null, null, null, null, null, null, null, null);
-	        	emp.modificarPieza(nuevaPieza);
-	        } else {
-	        	Pieza nuevaPieza = new Impresiones(id, titulo, anioCreacion,lugarCreacion, disponible, valor, null, false, null, tiempoAcordado, null, null, null, null, null, null, null, null,null);
-	        	emp.modificarPieza(nuevaPieza);
-	        
-	        }
-	        	
-	    }
+	   
 	
 
     private void cambiarUbicacionPieza(Empleado emp) {
 	    	
 	    	String nombre = input("Ingrese el nombre de la pieza: ");
-	        Integer ubicacion = Integer.parseInt(input("Seleccione el cambio a realizar:\n1. En exhibicion -> En bodega\n2. En bodega -> En exhibicion")) - 1;
+	       
 	        
-	        emp.cambiarUbicacionPieza(ubicacion, nombre);
+	        emp.cambiarUbicacionPieza(nombre);
 	        	
 	
 	    }
