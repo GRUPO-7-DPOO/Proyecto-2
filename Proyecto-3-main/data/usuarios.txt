@@ -1,0 +1,2 @@
+aa;aa;aaa;1234;aaaaaa;Comprador;0;;;1
+Administrador;admin;admin;0000;admin@galeria.com;ADMINISTRADOR;2
